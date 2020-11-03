@@ -37,10 +37,10 @@ class DialogController {
             console.log(validateQuery, dialogIntent)
             this.logger.info('get dialog request')
             const dialog = await this.dialogService.getDialog(userKeyData as string, dialogIntent as string);
-            res.send(dialog)
+            res.status(dialog.status).send(dialog.data)
         } catch (e) {
             this.logger.error(e);
-            res.status(400).send(e)
+            res.status(e?.status | 400).send(e)
         }
 
     }
@@ -83,10 +83,10 @@ class DialogController {
                 return res.status(422).send({ error: validateData.error });
             }
             const dialog = await this.dialogService.createDialog(dialogData);
-            res.send(dialog)
+            res.status(dialog.status).send(dialog.data)
         } catch (e) {
             this.logger.error(e);
-            res.status(400).send(e)
+            res.status(e?.status | 400).send(e)
         }
 
     }
